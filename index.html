@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trump-terminal-president - Meme Token</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #FF4136;
+            --secondary-color: #0074D9;
+            --accent-color: #FFD700;
+            --background-color: #F8F8F8;
+            --text-color: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Comic Neue', cursive;
+            font-size: 24px;
+            color: white;
+            text-decoration: none;
+        }
+
+        nav ul {
+            list-style-type: none;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: var(--accent-color);
+        }
+
+        .hero {
+            background: url('./logo.png') no-repeat center center;
+            background-size: cover;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            color: white;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero p {
+            font-size: 24px;
+            color: white;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: var(--accent-color);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            font-size: 36px;
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--primary-color);
+        }
+
+        .about-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .about-text {
+            flex: 1;
+            padding-right: 40px;
+        }
+
+        .about-image {
+            flex: 1;
+            text-align: center;
+        }
+
+        .about-image img {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .tokenomics-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .tokenomics-list li {
+            font-size: 18px;
+            margin-bottom: 10px;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .tokenomics-list li:before {
+            content: '\f3d1';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+        }
+
+        .how-to-buy-steps {
+            counter-reset: step-counter;
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .how-to-buy-steps li {
+            font-size: 18px;
+            margin-bottom: 20px;
+            padding-left: 50px;
+            position: relative;
+        }
+
+        .how-to-buy-steps li:before {
+            content: counter(step-counter);
+            counter-increment: step-counter;
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 36px;
+            height: 36px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        .roadmap {
+            position: relative;
+        }
+
+        .roadmap:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 2px;
+            height: 100%;
+            background-color: var(--primary-color);
+        }
+
+        .roadmap-item {
+            display: flex;
+            justify-content: flex-end;
+            padding-right: 30px;
+            position: relative;
+            margin-bottom: 50px;
+        }
+
+        .roadmap-item:nth-child(even) {
+            justify-content: flex-start;
+            padding-right: 0;
+            padding-left: 30px;
+        }
+
+        .roadmap-content {
+            width: 45%;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .roadmap-item:before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: -6px;
+            width: 12px;
+            height: 12px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            transform: translateY(-50%);
+        }
+
+        .roadmap-item:nth-child(even):before {
+            right: auto;
+            left: -6px;
+        }
+
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 24px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .token-address {
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            nav ul {
+                margin-top: 20px;
+            }
+
+            .about-content {
+                flex-direction: column;
+            }
+
+            .about-text {
+                padding-right: 0;
+                margin-bottom: 40px;
+            }
+
+            .roadmap:before {
+                left: 0;
+            }
+
+            .roadmap-item,
+            .roadmap-item:nth-child(even) {
+                justify-content: flex-start;
+                padding-left: 30px;
+                padding-right: 0;
+            }
+
+            .roadmap-content {
+                width: 100%;
+            }
+
+            .roadmap-item:before,
+            .roadmap-item:nth-child(even):before {
+                left: -6px;
+                right: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <a href="#" class="logo">TTP</a>
+            <nav>
+                <ul>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#tokenomics">Tokenomics</a></li>
+                    <li><a href="#how-to-buy">How to Buy</a></li>
+                    <li><a href="#roadmap">Roadmap</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div id="particles-js"></div>
+        <div class="hero-content">
+            <h1>Trump-terminal-president</h1>
+            <p>Cruising through the crypto universe in a meme-fueled Air Force One!</p>
+            <a href="#" class="btn">Join the Presidential Meme Force</a>
+        </div>
+    </section>
+
+    <section id="about" class="section">
+        <div class="container">
+            <h2 class="section-title">About TTP</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>Trump-terminal-president (TTP) is the most iconic, humorous, and trend-setting meme token in the crypto universe. Imagine Trump cruising through the digital skies in his meme-fueled Air Force One, overseeing his presidential terminal of digital mischief. It's not just a token; it's a ticket to the most imaginative and entertaining crypto journey you've ever experienced!</p>
+                </div>
+                <div class="about-image">
+                    <img src="./logo.png" alt="Trump-terminal-president logo">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="tokenomics" class="section">
+        <div class="container">
+            <h2 class="section-title">TOKENOMICS</h2>
+            <ul class="tokenomics-list">
+                <li>Total Supply: 1,000,000,000,000 TTP</li>
+                <li>Presidential Tax: 5% on all transactions (2% to holders, 3% to campaign fund)</li>
+                <li>Initial Liquidity: Locked for 4 years (one presidential term)</li>
+                <li>Meme Power: Unlimited and always increasing</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="how-to-buy" class="section">
+        <div class="container">
+            <h2 class="section-title">HOW TO BUY</h2>
+            <ol class="how-to-buy-steps">
+                <li>Get a Wallet - Download a reputable Ethereum wallet like MetaMask or Trust Wallet.</li>
+                <li>Acquire ETH - Purchase Ethereum (ETH) from a cryptocurrency exchange like Coinbase or Binance.</li>
+                <li>Connect to a DEX - Connect your wallet to a decentralized exchange (DEX) like Uniswap or SushiSwap.</li>
+                <li>Swap ETH for TTP - Use the DEX's swap feature to exchange your ETH for TTP.</li>
+            </ol>
+        </div>
+    </section>
+
+    <section id="roadmap" class="section">
+        <div class="container">
+            <h2 class="section-title">ROADMAP</h2>
+            <div class="roadmap">
+                <div class="roadmap-item">
+                    <div class="roadmap-content">
+                        <h3>Phase 1: Inauguration & Meme Proliferation</h3>
+                        <p>Launch the token and focus on spreading memes faster than fake news!</p>
+                    </div>
+                </div>
+                <div class="roadmap-item">
+                    <div class="roadmap-content">
+                        <h3>Phase 2: Campaign Trail & Meme Alliances</h3>
+                        <p>Ramp up our meme game and form strategic partnerships with other meme lords.</p>
+                    </div>
+                </div>
+                <div class="roadmap-item">
+                    <div class="roadmap-content">
+                        <h3>Phase 3: Executive Orders & Meme Economy</h3>
+                        <p>Develop new features and utilities for the token, like a meme marketplace.</p>
+                    </div>
+                </div>
+                <div class="roadmap-item">
+                    <div class="roadmap-content">
+                        <h3>Phase 4: Global Domination & Meme Legacy</h3>
+                        <p>Take over the world (of memes) and cement our place in internet history.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-links">
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-tiktok"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fas fa-chart-line"></i></a>
+                <a href="#"><i class="fab fa-telegram"></i></a>
+                <a href="#"><i class="fas fa-search-dollar"></i></a>
+            </div>
+            <div class="token-address">
+                <span
